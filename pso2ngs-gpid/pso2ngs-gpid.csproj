@@ -6,9 +6,7 @@
     <RootNamespace>pso2ngs_gpid</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>0.1.0</Version>
-    <PublishSingleFile>true</PublishSingleFile>
-    <SelfContained>true</SelfContained>
+    <Version>0.1.0+01</Version>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
   </PropertyGroup>
 
@@ -20,5 +18,24 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+
+  <PropertyGroup Condition="'$(Distribution)' == 'Standalone'">
+    <PublishSingleFile>true</PublishSingleFile>
+    <PublishTrimmed>true</PublishTrimmed>
+    <OutputZipFileName>$(PackageDir)Release\$(MSBuildProjectName)-$(Version)-$(RuntimeIdentifier)-standalone.zip</OutputZipFileName>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Distribution)' == 'Thin'">
+    <PublishSingleFile>false</PublishSingleFile>
+    <OutputZipFileName>$(PackageDir)Release\$(MSBuildProjectName)-$(Version)-$(RuntimeIdentifier)-thin.zip</OutputZipFileName>
+  </PropertyGroup>
+
+  <Target Name="ZipDistribution" AfterTargets="Publish">
+    <Delete Files="$(OutputZipFileName)" />
+    <ZipDirectory
+        SourceDirectory="$(PublishDir)"
+        DestinationFile="$(OutputZipFileName)"
+    />
+  </Target>
 
 </Project>

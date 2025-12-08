@@ -1,0 +1,19 @@
+# The task runner uses this file.
+# For information about the task runner, see the following URL:
+# https://taskfile.dev
+
+version: '3'
+
+tasks:
+  default:
+    desc: show tasks
+    cmds:
+      - task --list-all
+    silent: true
+
+  pack:
+    desc: make the packages
+    cmds:
+      - dotnet publish -c Release -p:Distribution=Standalone
+      - dotnet publish -c Release -p:Distribution=Thin
+    silent: true
