@@ -27,12 +27,12 @@ string gpid = $"gpid{cycle_table[index]}";
 Console.WriteLine(gpid);
 
 void ParseArgs(string[] args)
-    {
+{
     for (int i = 0; i < args.Length; i++)
-        {
+    {
         string arg = args[i];
         switch (arg)
-            {
+        {
             case "--":
                 unnamed = args[(i + 1)..];
                 i = args.Length; // break outer loop
@@ -58,18 +58,18 @@ void ParseArgs(string[] args)
             default:
                 ErrorExit($"Unknown option: {arg}");
                 break;
-            }
         }
-
     }
+
+}
 
 void PrintVersion()
-    {
+{
     Console.WriteLine($"{ProgramName} {Version}");
-    }
+}
 
 void PrintUsage()
-    {
+{
     Console.WriteLine($"Usage: {ProgramName} [options] [target]");
     Console.WriteLine("Options:");
     Console.WriteLine("  -h, --help          Show this help message");
@@ -82,63 +82,63 @@ void PrintUsage()
     Console.WriteLine("                      (default: 2023/06/07T04:00:00+0900)");
     Console.WriteLine("Target:");
     Console.WriteLine("  Optional target time in ISO8601 format. Defaults to current time if not provided.");
-    }
+}
 
 void Verbose(string message)
-    {
+{
     if (verbose)
-        {
+    {
         Console.Error.WriteLine("VERBOSE: " + message);
-        }
     }
+}
 
 void ErrorExit(string message)
-    {
+{
     Console.Error.WriteLine("ERROR: " + message);
     Environment.Exit(1);
-    }
+}
 
 string GetCycleTable(string varName, string defaultValue)
-    {
+{
     string env_CYCLE = Environment.GetEnvironmentVariable(varName) ?? defaultValue;
     string[] cycle_setting = env_CYCLE.Split(',', StringSplitOptions.RemoveEmptyEntries);
     if (cycle_setting.Length % 2 == 1 || cycle_setting.Length < 2)
-        {
+    {
         ErrorExit($"Invalid {varName} setting.");
-        }
+    }
 
     string cycle_table = "";
     for (int i = 0; i < cycle_setting.Length; i += 2)
-        {
+    {
         if (!int.TryParse(cycle_setting[i], out int count))
-            {
+        {
             ErrorExit($"Invalid {varName} format: {cycle_setting[i]}");
-            }
+        }
         string cycle_fragment = cycle_setting[i + 1];
         cycle_table += string.Concat(Enumerable.Repeat(cycle_fragment, count));
-        }
-    return cycle_table;
     }
+    return cycle_table;
+}
 
 DateTime GetStartTime(string varName, string defaultValue)
-    {
+{
     string env_START = Environment.GetEnvironmentVariable(varName) ?? defaultValue;
     if (!DateTime.TryParse(env_START, out DateTime start))
-        {
+    {
         ErrorExit($"Invalid {varName} date format.");
-        }
-    return start;
     }
+    return start;
+}
 
 DateTime GetTargetTime(string[] unnamed)
-    {
+{
     if (unnamed.Length == 0)
-        {
+    {
         return DateTime.Now;
-        }
-    if (!DateTime.TryParse(unnamed[0], out DateTime target_time))
-        {
-        ErrorExit("Invalid date format: " + unnamed[0]);
-        }
-    return target_time;
     }
+    if (!DateTime.TryParse(unnamed[0], out DateTime target_time))
+    {
+        ErrorExit("Invalid date format: " + unnamed[0]);
+    }
+    return target_time;
+}
