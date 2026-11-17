@@ -1,5 +1,5 @@
 const string ProgramName = "pso2ngs-gpid";
-const string Version = "0.1.0";
+const string Version = "0.2.0";
 const string EnvAppCycle = "PSO2NGSGPID_CYCLE";
 const string EnvAppStart = "PSO2NGSGPID_START";
 const string DefaultCycle = "13,0941852763674535496307218129,1,01";
